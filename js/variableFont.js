@@ -49,11 +49,13 @@ function setup() {
 
 function overParagraph(){
  // console.log("mouse is over the paragraph");
+  isOverParagraph = true;
   targetVal = 100;
 }
 
 function outParagraph(){
   //console.log("mouse is over the paragraph");
+  isOverParagraph = false;
   targetVal = 10;
 }
 
