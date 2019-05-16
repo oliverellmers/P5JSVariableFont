@@ -19,6 +19,10 @@ var textCanvas;
 
 
 function setup() {
+  
+  
+
+
   //noCursor();
   getMobileOperatingSystem();
 
@@ -27,7 +31,7 @@ function setup() {
 
   //textCanvas = createCanvas(1024, 768);
 
-  paragraph = createP("GROUNDED");
+  paragraph = createP("test");
   paragraph.class("pClass");
   paragraph.position(0,0);
   paragraph.mouseOver(overParagraph);
@@ -37,6 +41,12 @@ function setup() {
   multiCanvas.parent("multiCanvas");
   multiCanvas.mouseOver(overSketch);
   multiCanvas.mouseOut(outSketch);
+
+
+  //emo stuff
+  loadCamera();
+  loadTracker();
+  loadCanvas(720, 720);
 }
 
 function overParagraph(){
@@ -49,6 +59,37 @@ function outParagraph(){
 
 function draw() {
   background(255);
+
+
+  //emostuff
+  getPositions();
+  getEmotions();
+  
+  clear();
+  
+  noStroke();
+  fill(0,150);
+  rect(0,0,width,height);
+  
+  drawPoints();
+
+  if (emotions) {
+      // andry=0, sad=1, surprised=2, happy=3
+      for (var i = 0;i < predictedEmotions.length;i++) {
+          rect(i * 110+20, height-80, 30, -predictedEmotions[i].value * 30);
+            paragraph.elt.style['font-variation-settings'] = `"wght" ${predictedEmotions[3].value * 200}, "wdth" ${predictedEmotions[3].value * 200}`;  
+            
+      }
+
+  }
+  
+  text("ANGRY", 20, height-40);
+  text("SAD", 130, height-40);
+  text("SURPRISED", 220, height-40);
+  text("HAPPY", 340, height-40);
+
+
+
   
   var fontWeightDiff = fontWeightTarget - fontWeightCurrent;
   fontWeightCurrent += fontWeightDiff * easing;
@@ -61,16 +102,18 @@ function draw() {
     fontSizeTarget = 12;
     fontSizeStr = fontSizeCurrent + "vw";
     paragraph.style("font-size", fontSizeStr);
-    paragraph.style("color:rgba(255,255,255,255);");
+    paragraph.style("color:rgba(0,0,0,255);");
   }else{
     fontWeightTarget = 10;
     fontSizeTarget = 13.5;
     fontSizeStr = fontSizeCurrent + "vw";
     paragraph.style("font-size", fontSizeStr);
-    paragraph.style("color:rgba(255,255,255,0);");
+    paragraph.style("color:rgba(0,0,0,255);");
   }
 
-  paragraph.elt.style['font-variation-settings'] = `"wght" ${fontWeightCurrent}, "wdth" ${125}`;
+  //paragraph.elt.style['font-variation-settings'] = `"wght" ${fontWeightCurrent}, "wdth" ${125}`;
+  //paragraph.elt.style['font-variation-settings'] = `"wght" ${fontWeightCurrent}, "wdth" ${predictedEmotions[3] * 100}`;
+  //paragraph.elt.style['font-variation-settings'] = `"wght" ${predictedEmotions[3] * 100}, "wdth" ${125}`;
   paragraph.center();
 
 
@@ -87,6 +130,15 @@ function draw() {
   ellipse(mouseX, mouseY, 24, 24);
   blendMode(NORMAL)
   */
+
+  
+}
+
+function drawPoints() {
+    fill(255);
+    for (var i=0; i<positions.length -3; i++) {
+        ellipse(positions[i][0], positions[i][1], 2, 2);
+    }
 }
 
 function overSketch() {
