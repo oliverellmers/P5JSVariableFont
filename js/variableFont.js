@@ -13,6 +13,9 @@ var fontSizeStr = "vw";
 var fontSizeCurrent = 0;
 var fontSizeTarget = 0;
 
+var emoCurrent = 0;
+var emoTarget = 0;
+
 var easing = 0.25;
 
 var textCanvas;
@@ -73,15 +76,27 @@ function draw() {
   
   drawPoints();
 
+
+    
+
   if (emotions) {
       // andry=0, sad=1, surprised=2, happy=3
       for (var i = 0;i < predictedEmotions.length;i++) {
           rect(i * 110+20, height-80, 30, -predictedEmotions[i].value * 30);
-            paragraph.elt.style['font-variation-settings'] = `"wght" ${predictedEmotions[3].value * 200}, "wdth" ${predictedEmotions[3].value * 200}`;  
+            emoTarget = predictedEmotions[3].value * 200;
+          //paragraph.elt.style['font-variation-settings'] = `"wght" ${predictedEmotions[3].value * 200}, "wdth" ${predictedEmotions[3].value * 200}`;  
             
       }
 
   }
+var emoDiff = emoTarget - emoCurrent;
+    emoCurrent += emoDiff * easing;
+  paragraph.elt.style['font-variation-settings'] = `"wght" ${emoCurrent}, "wdth" ${emoCurrent}`; 
+
+
+    
+
+
   
   text("ANGRY", 20, height-40);
   text("SAD", 130, height-40);
